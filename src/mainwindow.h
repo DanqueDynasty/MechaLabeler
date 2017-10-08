@@ -2,6 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMenu>
+#include <QAction>
+#include <QMenuBar>
+
+
+#include "settingswindow.h"
+
 
 class MainWindow : public QMainWindow
 {
@@ -10,6 +17,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+private:
+    /*
+    * Initializes the GUI
+    */
+    void initGUI();
+    SettingsWindow* m_settingsWindow;
 };
 
 #endif // MAINWINDOW_H
