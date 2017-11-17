@@ -9,16 +9,35 @@
 #include <QStackedWidget>
 #include <QSplitter>
 #include <QLabel>
+#include <QComboBox>
+#include <QGridLayout>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QTextEdit>
+#include <QDebug>
+#include <QFileDialog>
 
 //Helper Widgets
 class ToolPanel : public QWidget
 {
+    Q_OBJECT
 public:
     ToolPanel(QWidget* parent = 0);
+private slots:
+    void addTarget();
+    void remTarget();
+    void assignConfigPath();
 private:
     void initGUI();
+    QLineEdit*      m_configPathLE;
+    QListWidget*    m_targetListWidget;
+    QTextEdit*      m_targetDescriptionList;
+    QString         m_configPath;
 };
 
+/**
+ * @brief The LocalPanel class. Handles Local file operations
+ */
 class LocalPanel: public QWidget
 {
 public:
@@ -27,6 +46,9 @@ private:
     void initGUI();
 };
 
+/**
+ * @brief The NetworkPanel class Handles Network Connections
+ */
 class NetworkPanel : public QWidget
 {
 public:

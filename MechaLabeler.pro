@@ -26,9 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
     src/mainwindow.cpp \
     src/labellingarea.cpp \
-    src/settingswindow.cpp
+    src/settingswindow.cpp \
+    src/rectmanagement.cpp
 
 HEADERS  += \
     src/mainwindow.h \
     src/labellingarea.h \
-    src/settingswindow.h
+    src/settingswindow.h \
+    src/rectmanagement.h

@@ -1,5 +1,17 @@
 #include "settingswindow.h"
 
+/*
+_______  _______ ___________________________ _        _______  _______
+(  ____ \(  ____ \\__   __/\__   __/\__   __/( (    /|(  ____ \(  ____ \
+| (    \/| (    \/   ) (      ) (      ) (   |  \  ( || (    \/| (    \/
+| (_____ | (__       | |      | |      | |   |   \ | || |      | (_____
+(_____  )|  __)      | |      | |      | |   | (\ \) || | ____ (_____  )
+     ) || (         | |      | |      | |   | | \   || | \_  )      ) |
+/\____) || (____/\   | |      | |   ___) (___| )  \  || (___) |/\____) |
+\_______)(_______/   )_(      )_(   \_______/|/    )_)(_______)\_______)
+
+*/
+
 SettingsWindow::SettingsWindow()
 {
     initGUI();
@@ -58,9 +70,79 @@ ToolPanel::ToolPanel(QWidget *parent) : QWidget(parent)
     initGUI();
 }
 
+/**
+ * @brief ToolPanel::addTarget
+ */
+void ToolPanel::addTarget()
+{
+    qDebug() << "Adding Target" << endl;
+}
+
+/**
+ * @brief ToolPanel::remTarget
+ */
+void ToolPanel::remTarget()
+{
+    int index = m_targetListWidget->currentRow();
+}
+
+/**
+ * @brief ToolPanel::assignConfigPath
+ */
+void ToolPanel::assignConfigPath()
+{
+    auto path = QFileDialog::getOpenFileName(this, "Config file", QDir::currentPath(), "*.mconfig");
+    m_configPathLE->setText(path);
+    m_configPath = path;
+}
+
+/**
+ * @brief ToolPanel::initGUI
+ * Generates the UI for Tools Panel
+ */
 void ToolPanel::initGUI()
 {
+    auto configPathLbl = new QLabel("ConfigPath", this);
+    m_configPathLE = new QLineEdit(this);
+    auto pathBtn = new QPushButton("[*]", this);
 
+    auto configLayout = new QHBoxLayout;
+    configLayout->addWidget(configPathLbl);
+    configLayout->addWidget(m_configPathLE);
+    configLayout->addWidget(pathBtn);
+
+    m_targetListWidget = new QListWidget(this);
+    m_targetListWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    auto addTargetBtn = new QPushButton("[+]", this);
+    addTargetBtn->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    auto remTargetBtn = new QPushButton("[-]", this);
+    remTargetBtn->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+    auto btnLayout0 = new QHBoxLayout;
+    btnLayout0->addWidget(addTargetBtn);
+    btnLayout0->addWidget(remTargetBtn);
+
+    auto leftListLayout = new QVBoxLayout;
+    leftListLayout->addWidget(new QLabel("Targets:", this));
+    leftListLayout->addWidget(m_targetListWidget);
+    leftListLayout->addLayout(btnLayout0);
+
+    m_targetDescriptionList = new QTextEdit(this);
+
+    auto targetLayout = new QHBoxLayout;
+    targetLayout->addLayout(leftListLayout);
+    targetLayout->addWidget(m_targetDescriptionList);
+
+    auto centralLayout = new QVBoxLayout;
+    centralLayout->addLayout(configLayout);
+    centralLayout->addLayout(targetLayout);
+    centralLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding));
+
+    connect(addTargetBtn, SIGNAL(clicked(bool)), SLOT(addTarget()));
+    connect(remTargetBtn, SIGNAL(clicked(bool)), SLOT(remTarget()));
+    connect(pathBtn, SIGNAL(clicked(bool)), SLOT(assignConfigPath()));
+
+    setLayout(centralLayout);
 }
 /*
 _        _______  _______  _______  _
