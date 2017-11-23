@@ -16,7 +16,7 @@ void MainWindow::assignImageFolderPath()
 {
     QString path = QFileDialog::getExistingDirectory(this, "Get Image Path" ,QDir::currentPath());
     qDebug() << path << endl;
-    QDirIterator it(path);
+    QDirIterator it(path, QDir::Files);
     while(it.hasNext()){
         QString img = it.next();
         qDebug() << img << endl;
@@ -27,6 +27,8 @@ void MainWindow::assignImageFolderPath()
 void MainWindow::initGUI()
 {
     m_tasksContainer = new QComboBox(this);
+    m_tasksContainer->addItem("MyTask1");
+    m_tasksContainer->addItem("MyTask2");
     auto openLclAction = new QAction("&Open Local Folder", this);
     auto connectToNetworkFolder = new QAction("&Connect To Folder", this);
     auto quitAct = new QAction("Quit", this);
