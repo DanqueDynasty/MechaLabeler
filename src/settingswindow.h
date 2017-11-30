@@ -17,6 +17,21 @@
 #include <QDebug>
 #include <QFileDialog>
 
+class AddToolModal : public QWidget{
+    Q_OBJECT
+public:
+    AddToolModal(QWidget* parent = 0);
+signals:
+    void newToolEmitted(int, QString, QString);
+private slots:
+    void processNewTool();
+private:
+    void initGUI();
+    QLineEdit*      m_targetNameLE;
+    QLineEdit*      m_indexLE;
+    QComboBox*      m_colorCMBX;
+};
+
 //Helper Widgets
 class ToolPanel : public QWidget
 {
@@ -27,12 +42,15 @@ private slots:
     void addTarget();
     void remTarget();
     void assignConfigPath();
+    void addNewTool(int, QString, QString);
 private:
     void initGUI();
     QLineEdit*      m_configPathLE;
     QListWidget*    m_targetListWidget;
     QTextEdit*      m_targetDescriptionList;
     QString         m_configPath;
+    AddToolModal*   m_addToolModal;
+    QDialog*        m_toolDiag;
 };
 
 /**

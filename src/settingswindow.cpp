@@ -76,6 +76,7 @@ ToolPanel::ToolPanel(QWidget *parent) : QWidget(parent)
 void ToolPanel::addTarget()
 {
     qDebug() << "Adding Target" << endl;
+    m_toolDiag->show();
 }
 
 /**
@@ -94,6 +95,11 @@ void ToolPanel::assignConfigPath()
     auto path = QFileDialog::getOpenFileName(this, "Config file", QDir::currentPath(), "*.mconfig");
     m_configPathLE->setText(path);
     m_configPath = path;
+}
+
+void ToolPanel::addNewTool(int, QString, QString)
+{
+    qDebug() << "Adding New Tool HEre" << endl;
 }
 
 /**
@@ -138,8 +144,16 @@ void ToolPanel::initGUI()
     centralLayout->addLayout(targetLayout);
     centralLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
+    m_addToolModal = new AddToolModal(this);
+    m_toolDiag = new QDialog(this);
+    auto hLayout = new QHBoxLayout;
+    hLayout->addWidget(m_addToolModal);
+    m_toolDiag->setLayout(hLayout);
+    m_toolDiag->setModal(true);
+
     connect(addTargetBtn, SIGNAL(clicked(bool)), SLOT(addTarget()));
     connect(remTargetBtn, SIGNAL(clicked(bool)), SLOT(remTarget()));
+    connect(m_addToolModal, SIGNAL(newToolEmitted(int,QString,QString)), SLOT(addNewTool(int,QString,QString)));
     connect(pathBtn, SIGNAL(clicked(bool)), SLOT(assignConfigPath()));
 
     setLayout(centralLayout);
@@ -183,4 +197,51 @@ NetworkPanel::NetworkPanel(QWidget *parent) : QWidget(parent)
 void NetworkPanel::initGUI()
 {
 
+}
+
+AddToolModal::AddToolModal(QWidget *parent)
+{
+    m_targetNameLE = new QLineEdit(this);
+    m_indexLE = new QLineEdit(this);
+    m_colorCMBX = new QComboBox(this);
+    m_colorCMBX->addItem("Red");
+    m_colorCMBX->addItem("Green");
+    m_colorCMBX->addItem("Blue");
+    m_colorCMBX->addItem("Orange");
+    m_colorCMBX->addItem("Yellow");
+    m_colorCMBX->addItem("Purple");
+
+    auto addBtn = new QPushButton("Add", this);
+    auto cancelBtn = new QPushButton("Cancel", this);
+
+    auto infoLayout = new QHBoxLayout;
+    infoLayout->addWidget(new QLabel("Index: ", this));
+    infoLayout->addWidget(m_indexLE);
+    infoLayout->addWidget(new QLabel("Name: ", this));
+    infoLayout->addWidget(m_targetNameLE);
+    infoLayout->addWidget(m_colorCMBX);
+
+    auto buttonLayout = new QHBoxLayout;
+    buttonLayout->addSpacerItem(new QSpacerItem(0,0,QSizePolicy::Expanding, QSizePolicy::Minimum));
+    buttonLayout->addWidget(addBtn);
+    buttonLayout->addWidget(cancelBtn);
+
+    auto centralLayout = new QVBoxLayout;
+    centralLayout->addLayout(infoLayout);
+    centralLayout->addLayout(buttonLayout);
+    connect(addBtn, SIGNAL(clicked(bool)), SLOT(processNewTool()));
+
+    setLayout(centralLayout);
+}
+
+/**
+ * @brief AddToolModal::processNewTool
+ * Emits new event
+ */
+void AddToolModal::processNewTool()
+{
+    auto ind = m_indexLE->text().toInt();
+    auto name = m_targetNameLE->text();
+    auto color = m_colorCMBX->currentText();
+    emit newToolEmitted(ind, name, color);
 }
