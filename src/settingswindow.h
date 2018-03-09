@@ -17,6 +17,12 @@
 #include <QDebug>
 #include <QFileDialog>
 
+struct TargetDescription{
+    uint index;
+    QString name;
+    QString color;
+};
+
 class AddToolModal : public QWidget{
     Q_OBJECT
 public:
@@ -38,6 +44,7 @@ class ToolPanel : public QWidget
     Q_OBJECT
 public:
     ToolPanel(QWidget* parent = 0);
+    void save();
 private slots:
     void addTarget();
     void remTarget();
@@ -51,6 +58,7 @@ private:
     QString         m_configPath;
     AddToolModal*   m_addToolModal;
     QDialog*        m_toolDiag;
+    QVector<TargetDescription> m_targetDecriptions;
 };
 
 /**
@@ -62,6 +70,8 @@ public:
     LocalPanel(QWidget* parent = 0);
 private:
     void initGUI();
+
+    QLineEdit* m_pathLE;
 };
 
 /**

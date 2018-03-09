@@ -20,8 +20,10 @@ void MainWindow::assignImageFolderPath()
     while(it.hasNext()){
         QString img = it.next();
         qDebug() << img << endl;
+        statusBar()->showMessage("Loading: " + img, 1000);
         m_labelingWidget->addImage(img);
     }
+    statusBar()->showMessage("Loaded All Images", 2000);
 }
 
 void MainWindow::initGUI()

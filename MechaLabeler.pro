@@ -27,10 +27,14 @@ SOURCES += main.cpp\
     src/mainwindow.cpp \
     src/labellingarea.cpp \
     src/settingswindow.cpp \
-    src/rectmanagement.cpp
+    src/rectmanagement.cpp \
+    src/imagecontainer.cpp \
+    src/activerectmanager.cpp
 
 HEADERS  += \
     src/mainwindow.h \
     src/labellingarea.h \
     src/settingswindow.h \
-    src/rectmanagement.h
+    src/rectmanagement.h \
+    src/imagecontainer.h \
+    src/activerectmanager.h

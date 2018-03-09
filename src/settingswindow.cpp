@@ -97,9 +97,14 @@ void ToolPanel::assignConfigPath()
     m_configPath = path;
 }
 
-void ToolPanel::addNewTool(int, QString, QString)
+void ToolPanel::addNewTool(int index, QString name, QString color)
 {
-    qDebug() << "Adding New Tool HEre" << endl;
+    auto targetDescription = TargetDescription();
+    targetDescription.index = index;
+    targetDescription.name = name;
+    targetDescription.color = color;
+    m_targetDecriptions.push_back(targetDescription);
+    m_targetListWidget->addItem(name);
 }
 
 /**
@@ -175,7 +180,19 @@ LocalPanel::LocalPanel(QWidget *parent) : QWidget(parent)
 
 void LocalPanel::initGUI()
 {
+    auto pathLbl = new QLabel("Path: ", this);
+    m_pathLE = new QLineEdit(this);
+    auto pathBtn = new QPushButton("...", this);
 
+    auto pathLayout = new QHBoxLayout;
+    pathLayout->addWidget(pathLbl);
+    pathLayout->addWidget(m_pathLE);
+    pathLayout->addWidget(pathBtn);
+
+    auto centralLayout = new QVBoxLayout;
+    centralLayout->addLayout(pathLayout);
+    centralLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding));
+    setLayout(centralLayout);
 }
 
 /*
@@ -244,4 +261,5 @@ void AddToolModal::processNewTool()
     auto name = m_targetNameLE->text();
     auto color = m_colorCMBX->currentText();
     emit newToolEmitted(ind, name, color);
+    close();
 }
